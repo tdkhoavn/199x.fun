@@ -26,5 +26,6 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
 
         /*----------  events/*  ----------*/
         Route::resource('/events', 'EventController');
+        Route::post('/events/type', 'EventController@storeType')->name('events.type.store');
     });
 });

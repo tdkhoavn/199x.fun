@@ -10,7 +10,7 @@
 <body class="hold-transition login-page">
     <div class="login-box">
         <div class="login-logo">
-            <a href="{{ route('web.index') }}">Đăng nhập | <b>Code 9</b></a>
+            <a href="{{ route('admin.index') }}">Đăng nhập | <b>199x.fun</b></a>
         </div>
         <div class="card">
             <div class="card-body login-card-body">

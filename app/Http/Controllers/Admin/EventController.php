@@ -3,7 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\AdminBaseController as Controller;
+use App\Http\Requests\Admin\EventRequest;
+use App\Http\Requests\Admin\EventTypeRequest;
+use Butschster\Head\Facades\Meta;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class EventController extends Controller
 {
@@ -24,7 +28,13 @@ class EventController extends Controller
      */
     public function create()
     {
-        return view('admin.events.create');
+        Meta::setTitleSeparator('|')
+            ->setTitle(config('constants.APP_FULLNAME'))
+            ->prependTitle('【Admin】Chỉnh sửa Event');
+
+        $event_types = $this->__eventTypeRepo->getAll();
+
+        return view('admin.events.create', compact('event_types'));
     }
 
     /**
@@ -33,9 +43,9 @@ class EventController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(EventRequest $request)
     {
-        //
+        dd($request->all());
     }
 
     /**
@@ -81,5 +91,22 @@ class EventController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \App\Http\Requests\EventTypeRequest  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function storeType(EventTypeRequest $request)
+    {
+        $data = [
+            'name'       => $request->name,
+            'created_by' => Auth::id(),
+        ];
+        $this->__eventTypeRepo->create($data);
+
+        return redirect()->route('admin.events.create');
     }
 }

@@ -2,13 +2,12 @@
 
 namespace App\Providers;
 
-use Butschster\Head\Contracts\Packages\PackageInterface;
-use Butschster\Head\Facades\PackageManager;
-use Butschster\Head\MetaTags\Meta;
-use Butschster\Head\Packages\Package;
-use Butschster\Head\MetaTags\Entities\Favicon;
 use Butschster\Head\Contracts\MetaTags\MetaInterface;
 use Butschster\Head\Contracts\Packages\ManagerInterface;
+use Butschster\Head\Facades\PackageManager;
+use Butschster\Head\MetaTags\Entities\Favicon;
+use Butschster\Head\MetaTags\Meta;
+use Butschster\Head\Packages\Package;
 use Butschster\Head\Providers\MetaTagsApplicationServiceProvider as ServiceProvider;
 
 class MetaTagsServiceProvider extends ServiceProvider
@@ -30,7 +29,7 @@ class MetaTagsServiceProvider extends ServiceProvider
             $meta_keywords = [
                 '199x',
                 'fun',
-                'relax'
+                'relax',
             ];
             $meta_keywords = implode(',', $meta_keywords);
 
@@ -50,7 +49,16 @@ class MetaTagsServiceProvider extends ServiceProvider
         PackageManager::create('admin_css', function (Package $package) {
             $package->addStyle('source_sans_pro', 'https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700')
                 ->addStyle('fontawesome', '/backend/css/fontawesome.min.css')
+                ->addStyle('select2', '/backend/plugins/select2/css/select2.min.css')
+                ->addStyle('datepicker', '/backend/plugins/daterangepicker/css/daterangepicker.css')
                 ->addStyle('adminlte', '/backend/css/adminlte.min.css');
+        });
+
+        PackageManager::create('fullcalendar_css', function (Package $package) {
+            $package->addStyle('fullcalendar-core', '/backend/plugins/fullcalendar/core/main.min.css')
+                ->addStyle('fullcalendar-bootstrap', '/backend/plugins/fullcalendar/bootstrap/main.min.css')
+                ->addStyle('fullcalendar-daygrid', '/backend/plugins/fullcalendar/daygrid/main.min.css')
+                ->addStyle('fullcalendar-timegrid', '/backend/plugins/fullcalendar/timegrid/main.min.css');
         });
     }
 

@@ -1,3 +1,3 @@
 <footer class="main-footer">
-    <strong>&copy; Copyright 2020 <a href="#">199x.fun</a>.</strong> All rights reserved.
+    <strong>&copy; Copyright 2020 <a href="#">{{ Request::getHttpHost() }}</a>.</strong> All rights reserved.
 </footer>
