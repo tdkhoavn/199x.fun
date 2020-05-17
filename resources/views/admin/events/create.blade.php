@@ -71,9 +71,9 @@
                         <div class="form-group">
                             <label for="member_id">Nguời tham gia</label>
                             <select class="form-control select2" multiple="multiple" style="width: 100%;" name="member_id[]" id="member_id">
-                                <option>Tấn</option>
-                                <option>Khoa</option>
-                                <option>Hòa</option>
+                                @foreach ($members as $member)
+                                <option value="{{ $member->id }}">{{ $member->name }}</option>
+                                @endforeach
                             </select>
                             @error('member_id')
                             <label class="col-form-label text-danger" for="member_id"><i class="far fa-times-circle"></i> {{ $message }}</label>
@@ -183,6 +183,54 @@
         });
         $('.inpCount').each(function(){
             $(this).trigger('keyup');
+        });
+
+        function convertVal(_val) {
+            _val = _val + '';
+            if (_val != '') {
+                if (_val.length > 3) {
+                    _val = parseInt(_val).toLocaleString('vi-VN');
+                }
+            }
+            return _val;
+        }
+
+        function add_unit($this) {
+            var input_tem = '';
+            input_tem = $this.val();
+            if (input_tem == '') {
+                return;
+            }
+            if (event.which >= 37 && event.which <= 40) {
+                return false;
+            }
+            var input_val = input_tem.replace(/\./g, '');
+            input_val = parseInt(input_val);
+            if (!/^[0-9]+$/.test(input_val)) {
+                return;
+            }
+            var inp_val = convertVal(input_val);
+            var start = $this[0].selectionStart,
+                end = $this[0].selectionEnd;
+
+            $this.val(inp_val);
+            if (inp_val.length < input_tem.length) {
+                end = end - 1;
+                start = start - 1;
+                if (start == -1 || end == -1) {
+                    start = 0;
+                    end = 0;
+                }
+            }
+            if (inp_val.length > input_tem.length) {
+                end = end + 1;
+                start = start + 1;
+            }
+            $this[0].setSelectionRange(start, end);
+        }
+
+        $('#total').on('keyup', function () {
+            add_unit($(this));
         });
     });
 </script>

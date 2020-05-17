@@ -2,10 +2,10 @@
 
 namespace App\Repositories;
 
-use App\Models\Event;
+use App\Models\Admin;
 use App\Repositories\TaskRepository;
 
-class EventRepository implements TaskRepository
+class AdminRepository implements TaskRepository
 {
     /**
      * @var $model
@@ -15,11 +15,11 @@ class EventRepository implements TaskRepository
     /**
      * EloquentTask constructor.
      *
-     * @param App\Models\Event $model
+     * @param App\Models\Admin $model
      */
     public function __construct()
     {
-        $this->model = new Event;
+        $this->model = new Admin;
     }
 
     /**
@@ -52,32 +52,6 @@ class EventRepository implements TaskRepository
     public function getByCondition($condition)
     {
         $builder = $this->model;
-
-        if (isset($condition['start_date']) && $condition['start_date']) {
-            $builder = $builder->whereDate('start_date', $condition['start_date']);
-        }
-
-        if (isset($condition['created_by']) && $condition['created_by']) {
-            $builder = $builder->where('created_by', $condition['created_by']);
-        }
-
-        if (isset($condition['type_id']) && $condition['type_id']) {
-            $builder = $builder->where('type_id', $condition['type_id']);
-        }
-
-        if (isset($condition['with']) && $condition['with']) {
-            $builder = $builder->with($condition['with']);
-        }
-
-        if (isset($condition['order_by']) && $condition['order_by']) {
-            foreach ($condition['order_by'] as $col_name => $value) {
-                $builder = $builder->orderBy($col_name, $value);
-            }
-        }
-
-        if (isset($condition['page_number']) && $condition['page_number']) {
-            return $builder->paginate($condition['page_number']);
-        }
 
         return $builder->get();
     }

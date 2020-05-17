@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\AdminRepository;
 use App\Repositories\EventRepository;
 use App\Repositories\EventTypeRepository;
 use Carbon\Carbon;
@@ -16,11 +17,13 @@ class Controller extends BaseController
 
     protected $__eventRepo;
     protected $__eventTypeRepo;
+    protected $__adminRepo;
 
     public function __construct()
     {
         $this->__eventRepo     = new EventRepository;
         $this->__eventTypeRepo = new EventTypeRepository;
+        $this->__adminRepo     = new AdminRepository;
         Carbon::setLocale('vi_VN');
     }
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\AdminBaseController as Controller;
 use App\Http\Requests\Admin\EventRequest;
 use App\Http\Requests\Admin\EventTypeRequest;
 use Butschster\Head\Facades\Meta;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,7 +19,19 @@ class EventController extends Controller
      */
     public function index()
     {
-        //
+        $condition = [
+            'page_number' => 4,
+            'order_by'    => ['updated_at' => 'desc'],
+            'with'        => ['admin', 'type'],
+        ];
+
+        $events = $this->__eventRepo->getByCondition($condition);
+
+        Meta::setTitleSeparator('|')
+            ->setTitle(config('constants.APP_FULLNAME'))
+            ->prependTitle('【Admin】Danh sách Event');
+
+        return view('admin.events.index', compact('events'));
     }
 
     /**
@@ -33,8 +46,11 @@ class EventController extends Controller
             ->prependTitle('【Admin】Chỉnh sửa Event');
 
         $event_types = $this->__eventTypeRepo->getAll();
+        $members     = $this->__adminRepo->getAll()->filter(function ($admin) {
+            return $admin->id != Auth::id();
+        });
 
-        return view('admin.events.create', compact('event_types'));
+        return view('admin.events.create', compact('event_types', 'members'));
     }
 
     /**
@@ -45,7 +61,18 @@ class EventController extends Controller
      */
     public function store(EventRequest $request)
     {
-        dd($request->all());
+        $data = [
+            'start_date' => Carbon::createFromFormat('d-m-Y', $request->start_date),
+            'member_id'  => $request->member_id,
+            'type_id'    => $request->type_id,
+            'total'      => int_value($request->total),
+            'note'       => $request->note,
+            'created_by' => Auth::id(),
+        ];
+
+        $this->__eventRepo->create($data);
+
+        return redirect()->route('admin.events.index');
     }
 
     /**

@@ -19,7 +19,7 @@ class CreateEventsTable extends Migration
             $table->foreignId('created_by');
             $table->json('member_id');
             $table->foreignId('type_id');
-            $table->decimal('total');
+            $table->unsignedBigInteger('total');
             $table->text('note')->nullable();
             $table->timestamps();
         });

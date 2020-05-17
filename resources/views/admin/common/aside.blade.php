@@ -28,15 +28,28 @@
                     @endif
                 </li>
                 <li class="nav-item">
+                    @if (Route::currentRouteName() == 'admin.events.index')
+                    <a href="{{ route('admin.events.index') }}" class="nav-link active">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Danh sách Event</p>
+                    </a>
+                    @else
+                    <a href="{{ route('admin.events.index') }}" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Danh sách Event</p>
+                    </a>
+                    @endif
+                </li>
+                <li class="nav-item">
                     @if (Route::currentRouteName() == 'admin.events.create')
                     <a href="{{ route('admin.events.create') }}" class="nav-link active">
                         <i class="far fa-circle nav-icon"></i>
-                        <p>Create event</p>
+                        <p>Thêm Event</p>
                     </a>
                     @else
                     <a href="{{ route('admin.events.create') }}" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
-                        <p>Create event</p>
+                        <p>Thêm Event</p>
                     </a>
                     @endif
                 </li>
