@@ -9,6 +9,6 @@ class AdminBaseController extends Controller
 {
     public function __construct()
     {
-        Meta::includePackages(['admin_css']);
+        Meta::includePackages(['favicons', 'admin_css']);
     }
 }

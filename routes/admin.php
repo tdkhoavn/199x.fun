@@ -14,5 +14,17 @@ use Illuminate\Support\Facades\Route;
  */
 
 Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
-    Route::resource('/events', 'EventController');
+    Route::group(['namespace' => 'Auth'], function () {
+        Route::get('/login', 'LoginController@showLoginForm')->name('showLogin');
+        Route::post('/login', 'LoginController@login')->name('login');
+        Route::get('/logout', 'LoginController@logout')->name('logout');
+    });
+
+    Route::group(['middleware' => 'auth:admin'], function () {
+        /*----------  admin/  ----------*/
+        Route::get('/', 'HomeController@index')->name('index');
+
+        /*----------  events/*  ----------*/
+        Route::resource('/events', 'EventController');
+    });
 });
