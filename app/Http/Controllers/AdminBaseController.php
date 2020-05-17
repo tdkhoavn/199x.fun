@@ -1,0 +1,14 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Controllers\Controller;
+use Butschster\Head\Facades\Meta;
+
+class AdminBaseController extends Controller
+{
+    public function __construct()
+    {
+        Meta::includePackages(['admin_css']);
+    }
+}
