@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Event;
 use App\Repositories\TaskRepository;
+use Carbon\Carbon;
 
 class EventRepository implements TaskRepository
 {
@@ -54,11 +55,24 @@ class EventRepository implements TaskRepository
         $builder = $this->model;
 
         if (isset($condition['start_date']) && $condition['start_date']) {
-            $builder = $builder->whereDate('start_date', $condition['start_date']);
+            $start_date = explode(' 〜 ', $condition['start_date']);
+            $builder    = $builder->whereDate(
+                'start_date',
+                '>=',
+                Carbon::createFromFormat('d-m-Y', $start_date[0])
+            )->whereDate(
+                'start_date',
+                '<=',
+                Carbon::createFromFormat('d-m-Y', $start_date[1])
+            );
         }
 
         if (isset($condition['created_by']) && $condition['created_by']) {
             $builder = $builder->where('created_by', $condition['created_by']);
+        }
+
+        if (isset($condition['member_id']) && $condition['member_id']) {
+            $builder = $builder->whereJsonContains('member_id', $condition['member_id']);
         }
 
         if (isset($condition['type_id']) && $condition['type_id']) {

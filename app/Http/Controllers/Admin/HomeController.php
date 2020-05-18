@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\AdminBaseController as Controller;
-use Illuminate\Http\Request;
 use Butschster\Head\Facades\Meta;
+use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
@@ -21,6 +21,20 @@ class HomeController extends Controller
             ->setTitle(config('constants.APP_FULLNAME'))
             ->prependTitle('【Admin】Dashboard');
 
-        return view('admin.index');
+        $calendar_data = [];
+        $events        = $this->__eventRepo->getAll()->load(['type', 'admin']);
+        foreach ($events as $event) {
+            $item = [
+                'title'           => "【{$event->type->name}】{$event->admin->name}",
+                'url'             => route('admin.events.edit', $event->id),
+                'start'           => $event->start_date,
+                'backgroundColor' => $event->type->color,
+                'borderColor'     => $event->type->color,
+                'allDay'          => true,
+            ];
+            $calendar_data[] = $item;
+        }
+
+        return view('admin.index', compact('calendar_data'));
     }
 }

@@ -31,7 +31,14 @@
                             <label for="name">Tên loại</label>
                             <input class="form-control" type="text" name="name" id="name" value="{{ old('name') }}">
                             @error('name')
-                            <label class="col-form-label text-danger" for="start_date"><i class="far fa-times-circle"></i> {{ $message }}</label>
+                            <label class="col-form-label text-danger" for="name"><i class="far fa-times-circle"></i> {{ $message }}</label>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label for="name">Màu sắc</label>
+                            <input class="form-control" type="color" id="color" name="color" value="{{ old('color') }}">
+                            @error('color')
+                            <label class="col-form-label text-danger" for="color"><i class="far fa-times-circle"></i> {{ $message }}</label>
                             @enderror
                         </div>
                     </div>
@@ -71,6 +78,7 @@
                         <div class="form-group">
                             <label for="member_id">Nguời tham gia</label>
                             <select class="form-control select2" multiple="multiple" style="width: 100%;" name="member_id[]" id="member_id">
+                                <option></option>
                                 @foreach ($members as $member)
                                 <option value="{{ $member->id }}">{{ $member->name }}</option>
                                 @endforeach
@@ -82,6 +90,7 @@
                         <div class="form-group">
                             <label for="type_id">Thể loại</label>
                             <select class="form-control select2" name="type_id" id="type_id">
+                                <option></option>
                                 @foreach ($event_types as $event_type)
                                 <option value="{{ $event_type->id }}" {{ old('type_id') == $event_type->id ? "selected" : null }}>{{ $event_type->name }}</option>
                                 @endforeach
@@ -104,7 +113,7 @@
                             @error('note')
                             <label class="col-form-label text-danger" for="note"><i class="far fa-times-circle"></i> {{ $message }}</label>
                             @enderror
-                      </div>
+                        </div>
                     </div>
                     <div class="card-footer">
                         <button type="submit" class="btn btn-primary">Thêm</button>
@@ -122,7 +131,9 @@
 <script>
     $(function () {
         //Initialize Select2 Elements
-        $('.select2').select2();
+        $('.select2').select2({
+            placeholder: "Vui lòng chọn"
+        });
         $('#start_date').daterangepicker({
             "singleDatePicker": true,
             "showDropdowns": true,
@@ -134,8 +145,8 @@
             },
             "locale": {
                 "format": "DD-MM-YYYY",
-                "applyLabel": "Đồng ý",
-                "cancelLabel": "Từ chối",
+                "applyLabel": "Chọn",
+                "cancelLabel": "Bỏ chọn",
                 "fromLabel": "Từ",
                 "toLabel": "Đến",
                 "customRangeLabel": "Tùy chọn",

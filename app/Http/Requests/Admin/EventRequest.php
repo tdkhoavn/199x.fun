@@ -36,7 +36,7 @@ class EventRequest extends FormRequest
     public function rules()
     {
         return [
-            'start_date' => 'required|date_format:d-m-Y',
+            'start_date' => 'required|date_format:d-m-Y|after_or_equal:today',
             'member_id'  => 'required|array',
             'type_id'    => 'required|exists:event_types,id',
             'total'      => 'required|regex:/^((?:\d{1,3}[,\.]?)+\d*)$/',
@@ -52,15 +52,16 @@ class EventRequest extends FormRequest
     public function messages()
     {
         return [
-            'start_date.required'    => 'Vui lòng nhập Ngày diễn ra.',
-            'start_date.date_format' => 'Vui lòng nhập Ngày diễn ra đúng định dạng :format.',
-            'member_id.required'     => 'Vui lòng chọn Nguời tham gia.',
-            'member_id.array'        => 'Vui lòng nhập Nguời tham gia đúng định dạng.',
-            'type_id.required'       => 'Vui lòng chọn Thể loại.',
-            'type_id.exists'         => 'Thể loại không tồn tại.',
-            'total.required'         => 'Vui lòng nhập Tổng số tiền.',
-            'total.regex'            => 'Vui lòng nhập Tổng số tiền đúng định dạng.',
-            'note.max'               => 'Ghi chú không đuợc quá :max ký tự.',
+            'start_date.required'       => 'Vui lòng nhập Ngày diễn ra.',
+            'start_date.date_format'    => 'Vui lòng nhập Ngày diễn ra đúng định dạng :format.',
+            'start_date.after_or_equal' => 'Vui lòng nhập Ngày diễn ra bắt đầu từ hôm nay.',
+            'member_id.required'        => 'Vui lòng chọn Nguời tham gia.',
+            'member_id.array'           => 'Vui lòng nhập Nguời tham gia đúng định dạng.',
+            'type_id.required'          => 'Vui lòng chọn Thể loại.',
+            'type_id.exists'            => 'Thể loại không tồn tại.',
+            'total.required'            => 'Vui lòng nhập Tổng số tiền.',
+            'total.regex'               => 'Vui lòng nhập Tổng số tiền đúng định dạng.',
+            'note.max'                  => 'Ghi chú không đuợc quá :max ký tự.',
         ];
     }
 }

@@ -11,5 +11,5 @@ class EventType extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'created_by'];
+    protected $fillable = ['name', 'color', 'created_by'];
 }

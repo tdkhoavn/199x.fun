@@ -24,7 +24,23 @@ class EventTypeRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|max:255'
+            'name'  => 'required|max:255',
+            'color' => 'required|max:255',
+        ];
+    }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'name.required'  => 'Vui lòng nhập Tên loại.',
+            'name.max'       => 'Tên loại không đuợc quá :max ký tự.',
+            'color.required' => 'Vui lòng chọn Màu sắc.',
+            'color.max'      => 'Màu sắc không đuợc quá :max ký tự.',
         ];
     }
 }

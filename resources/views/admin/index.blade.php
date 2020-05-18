@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
     var calendar = new FullCalendar.Calendar(calendarEl, {
         locale: 'vi',
-        plugins: [ 'bootstrap', 'interaction', 'dayGrid', 'timeGrid' ],
+        plugins: ['bootstrap', 'interaction', 'dayGrid', 'timeGrid'],
         defaultView: 'dayGridMonth',
         defaultDate: new Date(y, m, d),
         firstDay: 1,
@@ -55,34 +55,9 @@ document.addEventListener('DOMContentLoaded', function() {
             right: 'dayGridMonth,timeGridWeek,timeGridDay'
         },
         'themeSystem': 'bootstrap',
-        events: [
-            {
-                title: '【Đổi nuớc】Tấn',
-                url: '{{ route('admin.events.create') }}',
-                start: new Date(y, m, + 3),
-                backgroundColor: '#f56954',
-                borderColor    : '#f56954',
-                allDay         : true
-            },
-            {
-                title: '【Giặt đồ】Khoa',
-                url: '{{ route('admin.events.create') }}',
-                start: new Date(y, m, d + 1),
-                backgroundColor: '#00a65a',
-                borderColor    : '#00a65a',
-                allDay         : true
-            },
-            {
-                title: '【Giặt đồ】Hòa',
-                url: '{{ route('admin.events.create') }}',
-                start: new Date(y, m, d + 1),
-                backgroundColor: '#f39c12',
-                borderColor    : '#f39c12',
-                allDay         : true
-            },
-        ]
+        events: {!! json_encode($calendar_data) !!}
     });
-calendar.render();
+    calendar.render();
 });
 </script>
 @endsection

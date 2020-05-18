@@ -17,21 +17,23 @@ class EventController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $condition = [
-            'page_number' => 4,
+            'page_number' => 10,
             'order_by'    => ['updated_at' => 'desc'],
             'with'        => ['admin', 'type'],
-        ];
+        ] + $request->all();
 
-        $events = $this->__eventRepo->getByCondition($condition);
+        $events      = $this->__eventRepo->getByCondition($condition);
+        $event_types = $this->__eventTypeRepo->getAll();
+        $members     = $this->__adminRepo->getAll();
 
         Meta::setTitleSeparator('|')
             ->setTitle(config('constants.APP_FULLNAME'))
             ->prependTitle('【Admin】Danh sách Event');
 
-        return view('admin.events.index', compact('events'));
+        return view('admin.events.index', compact('events', 'event_types', 'members', 'request'));
     }
 
     /**
@@ -130,6 +132,7 @@ class EventController extends Controller
     {
         $data = [
             'name'       => $request->name,
+            'color'      => $request->color,
             'created_by' => Auth::id(),
         ];
         $this->__eventTypeRepo->create($data);
