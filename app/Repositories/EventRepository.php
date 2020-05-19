@@ -72,7 +72,12 @@ class EventRepository implements TaskRepository
         }
 
         if (isset($condition['member_id']) && $condition['member_id']) {
-            $builder = $builder->whereJsonContains('member_id', $condition['member_id']);
+            $member_ids = $condition['member_id'];
+            $builder = $builder->where(function ($query) use ($member_ids) {
+                foreach ($member_ids as $id) {
+                    $query->orWhere('member_id', 'LIKE', "%{$id}%");
+                }
+            });
         }
 
         if (isset($condition['type_id']) && $condition['type_id']) {

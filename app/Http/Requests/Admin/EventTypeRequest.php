@@ -24,7 +24,7 @@ class EventTypeRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'  => 'required|max:255',
+            'name'  => 'required|max:255|unique:event_types,name',
             'color' => 'required|max:255',
         ];
     }
@@ -39,6 +39,7 @@ class EventTypeRequest extends FormRequest
         return [
             'name.required'  => 'Vui lòng nhập Tên loại.',
             'name.max'       => 'Tên loại không đuợc quá :max ký tự.',
+            'name.unique'    => 'Tên loại đã đuợc sử dụng',
             'color.required' => 'Vui lòng chọn Màu sắc.',
             'color.max'      => 'Màu sắc không đuợc quá :max ký tự.',
         ];

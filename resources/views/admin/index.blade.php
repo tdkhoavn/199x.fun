@@ -34,7 +34,6 @@
 <script src="/backend/plugins/fullcalendar/daygrid/main.min.js"></script>
 <script src="/backend/plugins/fullcalendar/timegrid/main.min.js"></script>
 <script src="/backend/plugins/fullcalendar/interaction/main.min.js"></script>
-<script src="/backend/plugins/select2/js/select2.full.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     var date = new Date()

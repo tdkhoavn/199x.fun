@@ -32,7 +32,11 @@
                                 <select class="form-control select2" name="created_by" id="created_by">
                                     <option></option>
                                     @foreach ($members as $member)
-                                    <option value="{{ $member->id }}" {{ $request->created_by == $member->id ? "selected" : null }}>{{ $member->name }}</option>
+                                        @if ($request->created_by == $member->id)
+                                        <option value="{{ $member->id }}" selected>{{ $member->name }}</option>
+                                        @else
+                                        <option value="{{ $member->id }}">{{ $member->name }}</option>
+                                        @endif
                                     @endforeach
                                 </select>
                             </div>
@@ -51,7 +55,11 @@
                             <select class="form-control select2" multiple="multiple" style="width: 100%;" name="member_id[]" id="member_id">
                                 <option></option>
                                 @foreach ($members as $member)
-                                <option value="{{ $member->id }}">{{ $member->name }}</option>
+                                    @if ($request->member_id && in_array($member->id, $request->member_id))
+                                    <option value="{{ $member->id }}" selected>{{ $member->name }}</option>
+                                    @else
+                                    <option value="{{ $member->id }}">{{ $member->name }}</option>
+                                    @endif
                                 @endforeach
                             </select>
                         </div>
@@ -60,14 +68,18 @@
                             <select class="form-control select2" name="type_id" id="type_id">
                                 <option></option>
                                 @foreach ($event_types as $event_type)
-                                <option value="{{ $event_type->id }}" {{ $request->type_id == $event_type->id ? "selected" : null }}>{{ $event_type->name }}</option>
+                                    @if ($request->type_id == $event_type->id)
+                                    <option value="{{ $event_type->id }}" selected>{{ $event_type->name }}</option>
+                                    @else
+                                    <option value="{{ $event_type->id }}">{{ $event_type->name }}</option>
+                                    @endif
                                 @endforeach
                             </select>
                         </div>
                     </div>
                     <div class="card-footer">
                         <button type="submit" class="btn btn-primary">Tìm</button>
-                        <a class="btn btn-default float-right" href="{{ route('admin.events.index') }}">Xóa</a>
+                        <a class="btn btn-default float-right" href="{{ route('admin.events.index') }}">Xóa lọc</a>
                     </div>
                 {!! Form::close() !!}
             </div>
@@ -79,7 +91,6 @@
                 <div class="card-header">
                     <h3 class="card-title">Danh sách Event</h3>
                 </div>
-
                 <div class="card-body table-responsive p-0">
                     <table class="table table-hover text-nowrap">
                         <thead>
@@ -101,14 +112,22 @@
                             <tr>
                                 <td>{{ $event->id }}</td>
                                 <td>{{ $event->start_date->format('d-m-Y') }}</td>
-                                <td>{{ $event->admin->name }}</td>
+                                <td>
+                                    @if ($event->created_by == auth()->id())
+                                    <span class="badge badge-info">{{ $event->admin->name }}</span>
+                                    @else
+                                    {{ $event->admin->name }}
+                                    @endif
+                                </td>
                                 <td>{{ get_members($members, $event->member_id)->pluck('name')->implode('＼') }}</td>
                                 <td><span class="badge" style="background-color: {{ $event->type->color }}">{{ $event->type->name }}</span></td>
                                 <td>{{ number_format($event->total, 0, ',', '.') }}</td>
                                 <td>{{ $event->created_at->format('d-m-Y H:i:s') }}</td>
                                 <td>{{ $event->updated_at->format('d-m-Y H:i:s') }}</td>
                                 <td><a class="btn btn-block btn-sm btn-outline-primary" href="{{ route('admin.events.edit', $event->id) }}">Sửa</a></td>
-                                <td><a class="btn btn-block btn-sm btn-outline-danger" href="{{ route('admin.events.destroy', $event->id) }}">Xóa</a></td>
+                                <td>
+                                    <button class="btn btn-block btn-sm btn-outline-danger" data-toggle="modal" data-target="#model-delete" data-event_id="{{ $event->id }}">Xóa</button>
+                                </td>
                             </tr>
                             @endforeach
                             @else
@@ -129,52 +148,13 @@
 @endsection
 
 @section('custom_js')
-<script src="/backend/plugins/select2/js/select2.full.min.js"></script>
-<script src="/backend/plugins/daterangepicker/js/daterangepicker.min.js"></script>
-
 <script>
     $(function () {
         $('.select2').select2({
             placeholder: "Vui lòng chọn"
         });
-        $('#start_date').daterangepicker({
-            "autoUpdateInput": false,
-            "showDropdowns": true,
-            "locale": {
-                "format": "DD-MM-YYYY",
-                "separator": " 〜 ",
-                "applyLabel": "Chọn",
-                "cancelLabel": "Bỏ chọn",
-                "fromLabel": "Từ",
-                "toLabel": "Đến",
-                "customRangeLabel": "Tùy chọn",
-                "weekLabel": "T",
-                "daysOfWeek": [
-                    "CN",
-                    "T2",
-                    "T3",
-                    "T4",
-                    "T5",
-                    "T6",
-                    "T7"
-                ],
-                "monthNames": [
-                    "Tháng 1",
-                    "Tháng 2",
-                    "Tháng 3",
-                    "Tháng 4",
-                    "Tháng 5",
-                    "Tháng 6",
-                    "Tháng 7",
-                    "Tháng 8",
-                    "Tháng 9",
-                    "Tháng 10",
-                    "Tháng 11",
-                    "Tháng 12"
-                ],
-                "firstDay": 1
-            },
-        });
+
+        $('#start_date').daterangepicker(datePickerSetting);
 
         $('#start_date').on('apply.daterangepicker', function(ev, picker) {
             $(this).val(picker.startDate.format('DD-MM-YYYY') + ' 〜 ' + picker.endDate.format('DD-MM-YYYY'));
@@ -184,70 +164,35 @@
             $(this).val('');
         });
 
-        $('.inpCount').bind('keyup focus', function() {
-            var strCount = $(this).val().length;
-            var strMax = $(this).data('max');
-            var prev = $(this).parents('div').find('.txtCount');
-            $(prev).find('span').text(strCount);
-            if (strCount > strMax) {
-                $(prev).addClass('text-danger');
-                $(prev).removeClass('text-info');
-            } else {
-                $(prev).removeClass('text-danger');
-                $(prev).addClass('text-info');
-            }
-        });
-        $('.inpCount').each(function(){
-            $(this).trigger('keyup');
-        });
-
-        function convertVal(_val) {
-            _val = _val + '';
-            if (_val != '') {
-                if (_val.length > 3) {
-                    _val = parseInt(_val).toLocaleString('vi-VN');
-                }
-            }
-            return _val;
-        }
-
-        function add_unit($this) {
-            var input_tem = '';
-            input_tem = $this.val();
-            if (input_tem == '') {
-                return;
-            }
-            if (event.which >= 37 && event.which <= 40) {
-                return false;
-            }
-            var input_val = input_tem.replace(/\./g, '');
-            input_val = parseInt(input_val);
-            if (!/^[0-9]+$/.test(input_val)) {
-                return;
-            }
-            var inp_val = convertVal(input_val);
-            var start = $this[0].selectionStart,
-                end = $this[0].selectionEnd;
-
-            $this.val(inp_val);
-            if (inp_val.length < input_tem.length) {
-                end = end - 1;
-                start = start - 1;
-                if (start == -1 || end == -1) {
-                    start = 0;
-                    end = 0;
-                }
-            }
-            if (inp_val.length > input_tem.length) {
-                end = end + 1;
-                start = start + 1;
-            }
-            $this[0].setSelectionRange(start, end);
-        }
-
-        $('#total').on('keyup', function () {
-            add_unit($(this));
+        $('#model-delete').on('show.bs.modal', function(e) {
+            const event_id = $(e.relatedTarget).data('event_id');
+            const url      = "{!! route('admin.events.index') !!}/" + event_id;
+            $("#frm-delete").attr('action', url);
         });
     });
 </script>
+@endsection
+
+@section('modal')
+<div class="modal fade" id="model-delete">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Xóa Event</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Đóng">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Bạn có chắc muốn xóa Event</p>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                {!! Form::open(['method' => 'delete', 'id' => 'frm-delete']) !!}
+                <button type="submit" class="btn btn-danger">Xóa</button>
+                {!! Form::close() !!}
+            </div>
+        </div>
+    </div>
+</div>
 @endsection

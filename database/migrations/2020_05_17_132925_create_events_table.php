@@ -22,6 +22,7 @@ class CreateEventsTable extends Migration
             $table->unsignedBigInteger('total');
             $table->text('note')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

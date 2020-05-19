@@ -12,6 +12,16 @@ use Illuminate\Support\Facades\Auth;
 
 class EventController extends Controller
 {
+    protected $__members;
+    protected $__eventTypes;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->__members    = $this->__adminRepo->getAll();
+        $this->__eventTypes = $event_types = $this->__eventTypeRepo->getAll();
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -26,8 +36,8 @@ class EventController extends Controller
         ] + $request->all();
 
         $events      = $this->__eventRepo->getByCondition($condition);
-        $event_types = $this->__eventTypeRepo->getAll();
-        $members     = $this->__adminRepo->getAll();
+        $event_types = $this->__eventTypes;
+        $members     = $this->__members;
 
         Meta::setTitleSeparator('|')
             ->setTitle(config('constants.APP_FULLNAME'))
@@ -47,8 +57,8 @@ class EventController extends Controller
             ->setTitle(config('constants.APP_FULLNAME'))
             ->prependTitle('【Admin】Chỉnh sửa Event');
 
-        $event_types = $this->__eventTypeRepo->getAll();
-        $members     = $this->__adminRepo->getAll()->filter(function ($admin) {
+        $event_types = $this->__eventTypes;
+        $members     = $this->__members->filter(function ($admin) {
             return $admin->id != Auth::id();
         });
 
@@ -58,7 +68,7 @@ class EventController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\EventRequest $request
      * @return \Illuminate\Http\Response
      */
     public function store(EventRequest $request)
@@ -96,19 +106,39 @@ class EventController extends Controller
      */
     public function edit($id)
     {
-        //
+        $event = $this->__eventRepo->getById($id);
+        if (!$event) {
+            return redirect()->route('admin.events.index');
+        }
+
+        $event_types = $this->__eventTypes;
+        $members     = $this->__members->filter(function ($admin) {
+            return $admin->id != Auth::id();
+        });
+
+        return view('admin.events.edit', compact('event', 'event_types', 'members'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\EventRequest $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(EventRequest $request, $id)
     {
-        //
+        $data = [
+            'start_date' => Carbon::createFromFormat('d-m-Y', $request->start_date),
+            'member_id'  => $request->member_id,
+            'type_id'    => $request->type_id,
+            'total'      => int_value($request->total),
+            'note'       => $request->note,
+        ];
+
+        $this->__eventRepo->update($id, $data);
+
+        return redirect()->route('admin.events.index');
     }
 
     /**
@@ -119,7 +149,8 @@ class EventController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $this->__eventRepo->delete($id);
+        return back();
     }
 
     /**

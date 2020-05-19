@@ -25,7 +25,7 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
         Route::get('/', 'HomeController@index')->name('index');
 
         /*----------  events/*  ----------*/
-        Route::resource('/events', 'EventController');
+        Route::resource('/events', 'EventController')->except(['show']);
         Route::post('/events/type', 'EventController@storeType')->name('events.type.store');
     });
 });

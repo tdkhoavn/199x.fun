@@ -14,6 +14,7 @@
         </div>
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-accordion="false" data-widget="treeview" role="menu">
+                <!-- Dashboard -->
                 <li class="nav-item">
                     @if (Route::currentRouteName() == 'admin.index')
                     <a href="{{ route('admin.index') }}" class="nav-link active">
@@ -27,32 +28,50 @@
                     </a>
                     @endif
                 </li>
-                <li class="nav-item">
-                    @if (Route::currentRouteName() == 'admin.events.index')
-                    <a href="{{ route('admin.events.index') }}" class="nav-link active">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Danh sách Event</p>
+                <!-- END Dashboard -->
+
+                <!-- Events -->
+                @if (Route::is('admin.events.*'))
+                <li class="nav-item has-treeview menu-open">
+                @else
+                <li class="nav-item has-treeview">
+                @endif
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon far fa-calendar-alt"></i>
+                        <p>Events<i class="fas fa-angle-left right"></i></p>
                     </a>
-                    @else
-                    <a href="{{ route('admin.events.index') }}" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Danh sách Event</p>
-                    </a>
-                    @endif
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            @if (Route::currentRouteName() == 'admin.events.index')
+                            <a href="{{ route('admin.events.index') }}" class="nav-link active">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Danh sách Event</p>
+                            </a>
+                            @else
+                            <a href="{{ route('admin.events.index') }}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Danh sách Event</p>
+                            </a>
+                            @endif
+                        </li>
+                        <li class="nav-item">
+                            @if (Route::currentRouteName() == 'admin.events.create')
+                            <a href="{{ route('admin.events.create') }}" class="nav-link active">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Thêm Event</p>
+                            </a>
+                            @else
+                            <a href="{{ route('admin.events.create') }}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Thêm Event</p>
+                            </a>
+                            @endif
+                        </li>
+                    </ul>
                 </li>
-                <li class="nav-item">
-                    @if (Route::currentRouteName() == 'admin.events.create')
-                    <a href="{{ route('admin.events.create') }}" class="nav-link active">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Thêm Event</p>
-                    </a>
-                    @else
-                    <a href="{{ route('admin.events.create') }}" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Thêm Event</p>
-                    </a>
-                    @endif
-                </li>
+
+
+                <!-- END Events -->
             </ul>
         </nav>
     </div>

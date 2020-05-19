@@ -18,5 +18,6 @@
     </div>
     @include('admin.common.js')
     @yield('custom_js')
+    @yield('modal')
 </body>
 </html>
