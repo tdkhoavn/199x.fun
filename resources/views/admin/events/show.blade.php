@@ -28,7 +28,7 @@
                     <div class="card-body">
                         <div class="form-group">
                             <label for="">Người tổ chức</label>
-                            <input class="form-control" type="text" value="{{ Auth::user()->name }}" disabled>
+                            <input class="form-control" type="text" value="{{ $event->admin->name }}" disabled>
                         </div>
                         <div class="form-group">
                             <label for="start_date">Ngày diễn ra</label>
