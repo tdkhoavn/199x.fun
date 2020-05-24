@@ -31,7 +31,7 @@ class EventController extends Controller
     {
         $condition = [
             'page_number' => 20,
-            'order_by'    => ['updated_at' => 'desc'],
+            'order_by'    => ['start_date' => 'desc'],
             'with'        => ['admin', 'type'],
         ] + $request->all();
 
@@ -55,7 +55,7 @@ class EventController extends Controller
     {
         Meta::setTitleSeparator('|')
             ->setTitle(config('constants.APP_FULLNAME'))
-            ->prependTitle('【Admin】Chỉnh sửa Event');
+            ->prependTitle('【Admin】Thêm Event');
 
         $event_types = $this->__eventTypes;
         $members     = $this->__members->filter(function ($admin) {
@@ -95,6 +95,10 @@ class EventController extends Controller
      */
     public function show($id)
     {
+        Meta::setTitleSeparator('|')
+            ->setTitle(config('constants.APP_FULLNAME'))
+            ->prependTitle('【Admin】Chi tiết Event');
+
         $event = $this->__eventRepo->getById($id);
         if (!$event) {
             return redirect()->route('admin.events.index');
