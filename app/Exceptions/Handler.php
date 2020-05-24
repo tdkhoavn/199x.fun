@@ -50,6 +50,11 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
+        if ($exception instanceof \Illuminate\Http\Exceptions\PostTooLargeException) {
+            $message = 'Vui lòng upload tập tin không quá ' . ini_get('post_max_size');
+            return redirect()->back()->withErrors([$message]);
+        }
+
         return parent::render($request, $exception);
     }
 }
