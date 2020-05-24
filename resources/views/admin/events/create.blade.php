@@ -59,10 +59,12 @@
                     <div class="card-body">
                         <div class="form-group">
                             <div class="form-group">
-                                <label for="">Ai tổ chức</label>
+                                <label for="">Người tổ chức</label>
                                 <input class="form-control" type="text" value="{{ Auth::user()->name }}" disabled>
                             </div>
+
                             <label for="start_date">Ngày diễn ra</label>
+                            <small class="badge badge-danger float-right">Bắt buộc</small>
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">
@@ -93,6 +95,7 @@
                         </div>
                         <div class="form-group">
                             <label for="type_id">Thể loại</label>
+                            <small class="badge badge-danger float-right">Bắt buộc</small>
                             <select class="form-control select2" name="type_id" id="type_id">
                                 <option></option>
                                 @foreach ($event_types as $event_type)
@@ -109,6 +112,7 @@
                         </div>
                         <div class="form-group">
                             <label for="total">Tổng số tiền</label>
+                            <small class="badge badge-danger float-right">Bắt buộc</small>
                             <input class="form-control" type="text" name="total" id="total" value="{{ old('total') }}">
                             @error('total')
                             <label class="col-form-label text-danger" for="total"><i class="far fa-times-circle"></i> {{ $message }}</label>

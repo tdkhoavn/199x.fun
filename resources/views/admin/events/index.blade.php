@@ -22,24 +22,24 @@
         <div class="col-md-12">
             <div class="card card-primary">
                 <div class="card-header">
-                    <h3 class="card-title">Lọc Event</h3>
+                    <h3 class="card-title">Lọc</h3>
                 </div>
                 {!! Form::open(['url' => route('admin.events.index'), 'method' => 'get', 'role' => 'form']) !!}
                     <div class="card-body">
                         <div class="form-group">
-                            <div class="form-group">
-                                <label for="created_by">Ai tổ chức</label>
-                                <select class="form-control select2" name="created_by" id="created_by">
-                                    <option></option>
-                                    @foreach ($members as $member)
-                                        @if ($request->created_by == $member->id)
-                                        <option value="{{ $member->id }}" selected>{{ $member->name }}</option>
-                                        @else
-                                        <option value="{{ $member->id }}">{{ $member->name }}</option>
-                                        @endif
-                                    @endforeach
-                                </select>
-                            </div>
+                            <label for="created_by">Người tổ chức</label>
+                            <select class="form-control select2" name="created_by" id="created_by">
+                                <option></option>
+                                @foreach ($members as $member)
+                                    @if ($request->created_by == $member->id)
+                                    <option value="{{ $member->id }}" selected>{{ $member->name }}</option>
+                                    @else
+                                    <option value="{{ $member->id }}">{{ $member->name }}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
                             <label for="start_date">Ngày diễn ra</label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
@@ -89,7 +89,7 @@
         <div class="col-md-12">
             <div class="card card-primary">
                 <div class="card-header">
-                    <h3 class="card-title">Danh sách Event</h3>
+                    <h3 class="card-title">Danh sách</h3>
                 </div>
                 <div class="card-body table-responsive p-0">
                     <table class="table table-hover text-nowrap">
@@ -100,10 +100,8 @@
                                 <th>Nguời tạo</th>
                                 <th>Nguời tham gia</th>
                                 <th>Thể loại</th>
-                                <th>Tổng số tiền</th>
-                                <th>Ngày tạo</th>
                                 <th>Ngày cập nhật</th>
-                                <th colspan="2">Chức năng</th>
+                                <th colspan="3">Chức năng</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -119,11 +117,10 @@
                                     {{ $event->admin->name }}
                                     @endif
                                 </td>
-                                <td>{{ get_members($members, $event->member_id)->pluck('name')->implode('＼') }}</td>
+                                <td>{{ get_member_name($members, $event->member_id, '＼') }}</td>
                                 <td><span class="badge" style="background-color: {{ $event->type->color }}">{{ $event->type->name }}</span></td>
-                                <td>{{ number_format($event->total, 0, ',', '.') }}</td>
-                                <td>{{ $event->created_at->format('d-m-Y H:i:s') }}</td>
-                                <td>{{ $event->updated_at->format('d-m-Y H:i:s') }}</td>
+                                <td>{{ $event->updated_at->format('d-m-Y H:i') }}</td>
+                                <td><a class="btn btn-block btn-sm btn-outline-info" href="{{ route('admin.events.show', $event->id) }}">Xem</a></td>
                                 <td><a class="btn btn-block btn-sm btn-outline-primary" href="{{ route('admin.events.edit', $event->id) }}">Sửa</a></td>
                                 <td>
                                     <button class="btn btn-block btn-sm btn-outline-danger" data-toggle="modal" data-target="#model-delete" data-event_id="{{ $event->id }}">Xóa</button>

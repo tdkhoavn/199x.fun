@@ -28,7 +28,7 @@
                             <div class="form-group">
                                 @if ($errors->has('email'))
                                     <input type="email" id="email" name="email" class="form-control is-invalid" placeholder="Email" value="{{ old('email') }}">
-                                    <span class="error"><i class="far fa-times-circle"></i> {{ $errors->first('email') }}</span>
+                                    <span class="error invalid-feedback"><i class="far fa-times-circle"></i> {{ $errors->first('email') }}</span>
                                 @else
                                     <input type="email" id="email" name="email" class="form-control" placeholder="Email" value="{{ old('email') }}">
                                 @endif
@@ -66,6 +66,8 @@
                         <i class="fab fa-google-plus mr-2"></i> Đăng nhập với Google
                     </a>
                 </div>
+                <p class="mb-1"><a href="#">Quên mật khẩu</a></p>
+                <p class="mb-0"><a href="#" class="text-center">Đăng ký thành viên</a></p>
             </div>
         </div>
     </div>

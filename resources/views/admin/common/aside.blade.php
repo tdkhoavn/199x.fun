@@ -1,17 +1,9 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
-    <a class="brand-link" href="index3.html">
-        <img alt="199x Logo" class="brand-image img-circle elevation-3" src="/backend/img/AdminLTELogo.png" style="opacity: .8">
+    <a class="brand-link" href="{{ route('admin.index') }}">
+        <img alt="199x logo" class="brand-image img-circle elevation-3" src="/backend/img/AdminLTELogo.png" style="opacity: .8">
         <span class="brand-text font-weight-light">199x</span>
     </a>
     <div class="sidebar">
-        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-            <div class="image">
-                <img alt="" class="img-circle elevation-2" src="/backend/img/user2-160x160.jpg"></img>
-            </div>
-            <div class="info">
-                <a href="#" class="d-block">{{ Auth::user()->name }}</a>
-            </div>
-        </div>
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-accordion="false" data-widget="treeview" role="menu">
                 <!-- Dashboard -->
@@ -30,6 +22,22 @@
                 </li>
                 <!-- END Dashboard -->
 
+                <!-- Timeline -->
+                <li class="nav-item">
+                    @if (Route::currentRouteName() == 'admin.timeline')
+                    <a href="{{ route('admin.timeline') }}" class="nav-link active">
+                        <i class="nav-icon fas fa-stream"></i>
+                        <p>Timeline</p>
+                    </a>
+                    @else
+                    <a href="{{ route('admin.timeline') }}" class="nav-link">
+                        <i class="nav-icon fas fa-stream"></i>
+                        <p>Timeline</p>
+                    </a>
+                    @endif
+                </li>
+                <!-- END Timeline -->
+
                 <!-- Events -->
                 @if (Route::is('admin.events.*'))
                 <li class="nav-item has-treeview menu-open">
@@ -45,12 +53,12 @@
                             @if (Route::currentRouteName() == 'admin.events.index')
                             <a href="{{ route('admin.events.index') }}" class="nav-link active">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Danh sách Event</p>
+                                <p>Danh sách</p>
                             </a>
                             @else
                             <a href="{{ route('admin.events.index') }}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Danh sách Event</p>
+                                <p>Danh sách</p>
                             </a>
                             @endif
                         </li>
@@ -58,20 +66,60 @@
                             @if (Route::currentRouteName() == 'admin.events.create')
                             <a href="{{ route('admin.events.create') }}" class="nav-link active">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Thêm Event</p>
+                                <p>Thêm</p>
                             </a>
                             @else
                             <a href="{{ route('admin.events.create') }}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Thêm Event</p>
+                                <p>Thêm</p>
                             </a>
                             @endif
                         </li>
                     </ul>
                 </li>
-
-
                 <!-- END Events -->
+
+                <!-- Films -->
+                @if (Route::is('admin.films.*'))
+                <li class="nav-item has-treeview menu-open">
+                @else
+                <li class="nav-item has-treeview">
+                @endif
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-film"></i>
+                        <p>Films<i class="fas fa-angle-left right"></i></p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            @if (Route::currentRouteName() == 'admin.films.index')
+                            <a href="{{ route('admin.films.index') }}" class="nav-link active">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Danh sách</p>
+                            </a>
+                            @else
+                            <a href="{{ route('admin.films.index') }}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Danh sách</p>
+                            </a>
+                            @endif
+                        </li>
+                        <li class="nav-item">
+                            @if (Route::currentRouteName() == 'admin.films.create')
+                            <a href="{{ route('admin.films.create') }}" class="nav-link active">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Thêm</p>
+                            </a>
+                            @else
+                            <a href="{{ route('admin.films.create') }}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Thêm</p>
+                            </a>
+                            @endif
+                        </li>
+                    </ul>
+                </li>
+                <!-- END Films -->
+
             </ul>
         </nav>
     </div>

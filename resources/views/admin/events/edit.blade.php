@@ -28,18 +28,19 @@
                 {!! Form::open(['url' => route('admin.events.update', $event->id), 'method' => 'put', 'role' => 'form']) !!}
                     <div class="card-body">
                         <div class="form-group">
-                            <div class="form-group">
-                                <label for="">Ai tổ chức</label>
-                                <input class="form-control" type="text" value="{{ Auth::user()->name }}" disabled>
-                            </div>
+                            <label for="">Người tổ chức</label>
+                            <input class="form-control" type="text" value="{{ Auth::user()->name }}" disabled>
+                        </div>
+                        <div class="form-group">
                             <label for="start_date">Ngày diễn ra</label>
+                            <small class="badge badge-danger float-right">Bắt buộc</small>
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">
                                         <i class="far fa-calendar-alt"></i>
                                     </span>
                                 </div>
-                                <input type="text" class="form-control float-right" name="start_date" id="start_date" value="{{ old('start_date', $event->start_date) }}">
+                                <input type="text" class="form-control float-right" name="start_date" id="start_date" value="{{ old('start_date', $event->start_date->format('d-m-Y')) }}">
                             </div>
                             @error('start_date')
                             <label class="col-form-label text-danger" for="start_date"><i class="far fa-times-circle"></i> {{ $message }}</label>
@@ -63,6 +64,7 @@
                         </div>
                         <div class="form-group">
                             <label for="type_id">Thể loại</label>
+                            <small class="badge badge-danger float-right">Bắt buộc</small>
                             <select class="form-control select2" name="type_id" id="type_id">
                                 <option></option>
                                 @foreach ($event_types as $event_type)
@@ -79,6 +81,7 @@
                         </div>
                         <div class="form-group">
                             <label for="total">Tổng số tiền</label>
+                            <small class="badge badge-danger float-right">Bắt buộc</small>
                             <input class="form-control" type="text" name="total" id="total" value="{{ old('total', number_format($event->total, 0, ',', '.')) }}">
                             @error('total')
                             <label class="col-form-label text-danger" for="total"><i class="far fa-times-circle"></i> {{ $message }}</label>
@@ -94,7 +97,7 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-primary">Thêm</button>
+                        <button type="submit" class="btn btn-primary">Cập nhật</button>
                     </div>
                 {!! Form::close() !!}
             </div>

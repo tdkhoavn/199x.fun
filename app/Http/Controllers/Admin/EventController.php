@@ -30,7 +30,7 @@ class EventController extends Controller
     public function index(Request $request)
     {
         $condition = [
-            'page_number' => 10,
+            'page_number' => 20,
             'order_by'    => ['updated_at' => 'desc'],
             'with'        => ['admin', 'type'],
         ] + $request->all();
@@ -95,7 +95,17 @@ class EventController extends Controller
      */
     public function show($id)
     {
-        //
+        $event = $this->__eventRepo->getById($id);
+        if (!$event) {
+            return redirect()->route('admin.events.index');
+        }
+
+        $event_types = $this->__eventTypes;
+        $members     = $this->__members->filter(function ($admin) {
+            return $admin->id != Auth::id();
+        });
+
+        return view('admin.events.show', compact('event', 'members', 'event_types'));
     }
 
     /**
@@ -122,7 +132,7 @@ class EventController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\EventRequest $request
+     * @param  \App\Http\Requests\Admin\EventRequest $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -156,7 +166,7 @@ class EventController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\EventTypeRequest  $request
+     * @param  \App\Http\Requests\Admin\EventTypeRequest $request
      * @return \Illuminate\Http\Response
      */
     public function storeType(EventTypeRequest $request)

@@ -26,7 +26,7 @@ class HomeController extends Controller
         foreach ($events as $event) {
             $item = [
                 'title'           => "【{$event->type->name}】{$event->admin->name}",
-                'url'             => route('admin.events.edit', $event->id),
+                'url'             => route('admin.events.show', $event->id),
                 'start'           => $event->start_date,
                 'backgroundColor' => $event->type->color,
                 'borderColor'     => $event->type->color,
@@ -36,5 +36,21 @@ class HomeController extends Controller
         }
 
         return view('admin.index', compact('calendar_data'));
+    }
+
+    /**
+     * Handle the incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function timeline()
+    {
+        Meta::includePackages(['fullcalendar_css']);
+        Meta::setTitleSeparator('|')
+            ->setTitle(config('constants.APP_FULLNAME'))
+            ->prependTitle('【Admin】Timeline');
+
+        return view('admin.timeline');
     }
 }

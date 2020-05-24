@@ -17,10 +17,12 @@ class CreatAdminsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('email')->unique();
-            $table->string('avatar');
+            $table->unsignedTinyInteger('gender');
+            $table->string('avatar')->nullable();
             $table->date('birthday');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->datetime('img_mtime')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

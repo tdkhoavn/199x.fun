@@ -17,7 +17,7 @@ class CreateEventsTable extends Migration
             $table->id();
             $table->date('start_date');
             $table->foreignId('created_by');
-            $table->json('member_id');
+            $table->json('member_id')->nullable();
             $table->foreignId('type_id');
             $table->unsignedBigInteger('total');
             $table->text('note')->nullable();
