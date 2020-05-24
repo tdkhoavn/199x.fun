@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Seeder;
 use App\Models\Admin;
+use Illuminate\Database\Seeder;
 
 class AdminSeeder extends Seeder
 {
@@ -21,31 +21,31 @@ class AdminSeeder extends Seeder
             'email_verified_at' => now(),
             'password'          => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token'    => Str::random(10),
-            'img_mtime' => now(),
+            'img_mtime'         => now(),
         ]);
 
         Admin::create([
             'name'              => 'Huỳnh Quốc Tấn',
-            'email'             => 'tdkhoa.angiang@gmail.com',
+            'email'             => 'hqtan1604@gmail.com',
             'gender'            => 1,
             'avatar'            => 'no-avatar.png',
             'birthday'          => '1995-01-01',
             'email_verified_at' => now(),
             'password'          => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token'    => Str::random(10),
-            'img_mtime' => now(),
+            'img_mtime'         => now(),
         ]);
 
         Admin::create([
             'name'              => 'Võ Thanh Hòa',
-            'email'             => 'tdkhoa.angiang@gmail.com',
+            'email'             => 'dolp7604@gmail.com',
             'gender'            => 1,
             'avatar'            => 'no-avatar.png',
             'birthday'          => '1995-01-01',
             'email_verified_at' => now(),
             'password'          => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token'    => Str::random(10),
-            'img_mtime' => now(),
+            'img_mtime'         => now(),
         ]);
     }
 }
